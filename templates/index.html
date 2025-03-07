@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Heart Disease Prediction</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <style>
+      .custom-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      .form-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+      .form-title {
+        color: #2c3e50;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <div class="container py-5">
+      <div class="card custom-card">
+        <div class="card-header">
+          <h1 class="text-center mb-0">Heart Disease Risk Assessment</h1>
+        </div>
+        <div class="card-body">
+          <form action="/predict" method="post">
+            <div class="row g-4">
+              <!-- Left Column -->
+              <div class="col-md-12">
+                <div class="form-section">
+                  <h4 class="form-title">Personal Information</h4>
+
+                  <!-- Age -->
+                  <div class="mb-3">
+                    <label class="form-label">Age (Years)</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="age"
+                      min="20"
+                      max="100"
+                      required
+                    />
+                  </div>
+
+                  <!-- Sex -->
+                  <div class="mb-3">
+                    <label class="form-label">Sex</label>
+                    <select class="form-select" name="sex" required>
+                      <option value="0">Female</option>
+                      <option value="1">Male</option>
+                    </select>
+                  </div>
+
+                  <!-- Chest Pain Type -->
+                  <div class="mb-3">
+                    <label class="form-label">Chest Pain Type</label>
+                    <select class="form-select" name="cp" required>
+                      <option value="0">Typical Angina</option>
+                      <option value="1">Atypical Angina</option>
+                      <option value="2">Non-anginal Pain</option>
+                      <option value="3">Asymptomatic</option>
+                    </select>
+                  </div>
+
+                  <!-- Blood Pressure & Cholesterol -->
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label">Resting BP (mm Hg)</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="trestbps"
+                        min="80"
+                        max="200"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">Cholesterol (mg/dl)</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="chol"
+                        min="120"
+                        max="600"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div class="col-md-12">
+                <div class="form-section">
+                  <h4 class="form-title">Medical Details</h4>
+
+                  <!-- Fasting Blood Sugar -->
+                  <div class="mb-3">
+                    <label class="form-label"
+                      >Fasting Blood Sugar > 120 mg/dl</label
+                    >
+                    <select class="form-select" name="fbs" required>
+                      <option value="0">No</option>
+                      <option value="1">Yes</option>
+                    </select>
+                  </div>
+
+                  <!-- ECG Results -->
+                  <div class="mb-3">
+                    <label class="form-label">Resting ECG Results</label>
+                    <select class="form-select" name="restecg" required>
+                      <option value="0">Normal</option>
+                      <option value="1">ST-T Wave Abnormality</option>
+                      <option value="2">Probable LV Hypertrophy</option>
+                    </select>
+                  </div>
+
+                  <!-- Heart Rate & Exercise Angina -->
+                  <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                      <label class="form-label">Max Heart Rate</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="thalach"
+                        min="60"
+                        max="220"
+                        required
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">Exercise Angina</label>
+                      <select class="form-select" name="exang" required>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- ST Depression -->
+                  <div class="mb-3">
+                    <label class="form-label">ST Depression</label>
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="oldpeak"
+                      step="0.1"
+                      min="0"
+                      max="6.2"
+                      required
+                    />
+                  </div>
+
+                  <!-- Slope & Vessels -->
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label">ST Slope</label>
+                      <select class="form-select" name="slope" required>
+                        <option value="0">Upsloping</option>
+                        <option value="1">Flat</option>
+                        <option value="2">Downsloping</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">Major Vessels</label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        name="ca"
+                        min="0"
+                        max="3"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Thalassemia -->
+                  <div class="mb-3">
+                    <label class="form-label">Thalassemia</label>
+                    <select class="form-select" name="thal" required>
+                      <option value="0">Normal</option>
+                      <option value="1">Fixed Defect</option>
+                      <option value="2">Reversible Defect</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2 mt-4">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="bi bi-heart-pulse me-2"></i> Predict Risk
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+    />
+  </body>
+</html>
